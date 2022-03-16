@@ -6,7 +6,6 @@ baseurl = "https://shop.whiskybase.com/us/whisky/"
 #crawler
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36'}
 productlinks = []
-t={}
 data=[]
 c=0
 for x in range(1,6):

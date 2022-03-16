@@ -1,6 +1,7 @@
 import requests
 from  requests import get
 from bs4 import BeautifulSoup
+import csv
 from collections import defaultdict
 import pandas as pd
 
@@ -9,9 +10,7 @@ import pandas as pd
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.82 Safari/537.36'}
 
 n_pages = 0
-Whiskey_Dict = defaultdict(list)
-database = pd.DataFrame
-import csv
+
 
 with open("test.csv", "w",encoding="utf-8") as file:
     writer = csv.writer(file)
