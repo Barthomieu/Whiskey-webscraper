@@ -17,14 +17,16 @@ with conn.cursor() as cursor:
 
 id_cena = []
 with conn.cursor() as cursor:
-    cursor.execute(f'''SELECT ID FROM Whiskey_price''')
+    cursor.execute(f'''SELECT ID,Price FROM Whiskey_price''')
     for row in cursor:
         for field in row:
             id_cena.append(field)
+print(id_cena)
 
-for id in id_cena:
-    if id_list.__contains__(id):
-        id_list.remove(id)
+
+#for id in id_cena:
+    #if id_list.__contains__(id[0]):
+        #id_list.remove(id[0])
 
 
 for id in id_list:
@@ -33,19 +35,35 @@ for id in id_list:
     #tutaj wycjagnąc wszystkie dane łącznie z data i zapisac do nowej tabeli w bazie razem z id produktu
     # Ceny
     try:
-        price = page_html.find("div", {"id": "mp-whisky-price"},"span").text.replace('\t', "").replace('\n', "").replace("USD$", "").replace("€", "").replace(" ","")
+        price = page_html.find("div", {"id": "mp-whisky-price"},"span").text.replace('\t', "").replace('\n', "").replace("USD$", "").replace("€", "").replace(" ","").replace("£", "").replace("CHF","")
         if(len(price)>15):
-            price = page_html.find("span", {"id": "mp-whisky-price-str"}).text.replace('\t', "").replace('\n',"").replace("USD$", "").replace("€", "").replace(" ", "")
+            price = page_html.find("span", {"id": "mp-whisky-price-str"}).text.replace('\t', "").replace('\n',"").replace("USD$", "").replace("€", "").replace(" ", "").replace("£", "").replace("CHF","")
     except:
         price = None
+    if(price == None):
+        try:
+            price = page_html.find("div", {"class": "mp-whisky-item-price"},"span").text.replace('\t', "").replace('\n', "").replace("USD$", "").replace("€", "").replace(" ","").replace("£", "").replace("CHF","")
+        except:
+            price = None
+
     # Data
     data = datetime.datetime.now().today()
 
-    #print(price)
-    print(id)
-    print(price)
-    with conn.cursor() as cursor:
-        cursor.execute(f'''INSERT INTO Whiskey_price VALUES({int(id)}, '{price}', '{data}')''')
+    if(price != None):
+        with conn.cursor() as cursor:
+            cursor.execute(f'''IF EXISTS
+            (
+            SELECT *
+            FROM Whiskey_price
+            WHERE ID = {id} AND Price = {price}) 
+            Begin
+            Print'istnieje'    
+            END
+            ELSE 
+            BEGIN
+            INSERT INTO Whiskey_price VALUES({int(id)}, {price}, '{data}')
+            END''')
+
     #print(id)
 
 
