@@ -1,12 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
- <title></title>
- <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+ <title>WhiskeyPriceTracker</title>
+
+    {% assets 'app-css' %}
+      <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
+    {% endassets %}
 
 </head>
 <body>
+<ul>
+	<li>Home</li>
+	<li>About</li>
+	<li>Gallery</li>
+	<li>Contact us</li>
+</ul>
+
+
 <h2>Program do śledzenia cen whiskey</h2>
-<p align="center"><a href=mainpage ><button class=grey style="height:75px;width:150px">Pokaż tabele whiskey</button></a></p>
+<p><a href=mainpage ><button class=grey style="height:75px;width:150px">Pokaż tabele whiskey</button></a></p>
+
+
+<div class="table-users">
+   <div class="header">Tabla zmienności cen</div>
+
+   <table cellspacing="0">
+      <tr>
+         <th>Nazwa</th>
+         <th>Aktualna cena</th>
+         <th>zmienność </th>
+         <th width="230">link do akucji</th>
+      </tr>
+
+        {% for row in data %}
+            <tr>
+
+                <td>{{row[1]}}</td>
+                <td>cena z walutą </td>
+                <td>procenttowa zmiana </td>
+                <td>{{row[2]}}</td>
+            </tr>
+        {% endfor %}
+   </table>
+</div>
 </body>
 </html>
