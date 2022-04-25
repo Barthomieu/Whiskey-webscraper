@@ -43,7 +43,16 @@ for page in range(0,2):
             if link != None:
                 print(f"dodaje do bazy:  {int(id)}, '{name}', '{link}')")
                 with conn.cursor() as cursor:
-                    cursor.execute(f'''INSERT INTO Whiskey_data VALUES({int(id)}, '{name}', '{link}')''')
+                    cursor.execute(f'''IF EXISTS ( SELECT * FROM Whiskey_data WHERE product_id = {int(id)} )
+                                BEGIN
+                                Print'istnieje'    
+                                END
+                                ELSE 
+                                BEGIN
+                                INSERT INTO Whiskey_data(product_id, product_name, store_link,update_data   )
+                                 VALUES({int(id)}, '{name}', '{link}', 0)
+                                END''')
+
     else:
         break
 

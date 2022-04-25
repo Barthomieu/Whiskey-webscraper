@@ -8,7 +8,7 @@ base_url = "https://www.whiskybase.com/market/whisky/"
 
 update_list = []
 with conn.cursor() as cursor:
-    cursor.execute(f'''SELECT product_id FROM Whiskey_data where update_data is null OR update_data = 1''') # pobieram id rekordów bez kompletnych danych
+    cursor.execute(f'''SELECT product_id FROM Whiskey_data where update_data is null OR update_data = 0''') # pobieram id rekordów bez kompletnych danych
     for row in cursor:
         for field in row:
             update_list.append(field)
@@ -20,6 +20,15 @@ print(update_list)
 for bottle_id in update_list:
     r = get(base_url + str(bottle_id), headers=headers).text
     page_html = BeautifulSoup(r, "html.parser")
+
+    #rating
+    try:
+        rating_all = page_html.find("dl", {"class": "dl-horizontal"}).text.replace('\t', "").replace('\n', "")
+        rating = rating_all[7:13]
+    except:
+        rating = None
+    print(rating)
+
     table = page_html.find("table", attrs={"class":"datalist mp-whisky"})
     if table != None:
         df = pd.read_html(str(table))[0]
@@ -43,9 +52,17 @@ for bottle_id in update_list:
             ships_from = None
         print(ships_from)
 
+        with conn.cursor() as cursor:
+            cursor.execute(f'''UPDATE  Whiskey_data 
+                            SET category = '{category}',
+                                bottled = '{bottled}',
+                                rating = '{rating}',
+                                ships_from = '{ships_from}',
+                                update_data = 1                        
+                            WHERE product_id = {bottle_id}''')
 
     else:
         print("brak danych")
 
 
-        #dodać update na tabeli głównej
+
