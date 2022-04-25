@@ -29,14 +29,22 @@ assets.register('app-css', css)
 
 @app.route('/')
 def index():
-    cursor.execute("SELECT * FROM Whiskey_data")
+    cursor.execute(f"""SELECT	product_name
+		,(select top 1 Price where Id = product_id order by Data desc)
+		-- TODO dodać obliczanie zmienności ceny
+		,store_link
+		,D.category
+		,bottled 
+		,rating
+		,ships_from
+
+	FROM Whiskey_data D
+	JOIN Whiskey_price P on D.product_id=P.ID""")
     data = cursor.fetchall()
     return render_template('index.html', data=data)
 @app.route('/mainpage')
-def v_timestamp():
-    cursor.execute("SELECT * FROM Whiskey_data")
-    data = cursor.fetchall()
-    return render_template('mainpage.html', data=data)
+def mainpage():
+    return render_template('mainpage.html')
 
 if __name__ ==  '__main__':
     app.run()

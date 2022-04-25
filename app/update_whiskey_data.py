@@ -47,7 +47,7 @@ for bottle_id in update_list:
             # kraj dostawy
         print(bottled)
         try:
-            ships_from = df[df[0] == "Ships fromd"][1].values[0]
+            ships_from = df[df[0] == "Ships from"][1].values[0]
         except:
             ships_from = None
         print(ships_from)
