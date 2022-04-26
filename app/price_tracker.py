@@ -50,19 +50,22 @@ for id in id_list:
     data = datetime.datetime.now().today()
 
     if(price != None):
-        with conn.cursor() as cursor:
-            cursor.execute(f'''IF EXISTS
-            (
-            SELECT *
-            FROM Whiskey_price
-            WHERE ID = {id} AND Price = {price}) 
-            Begin
-            Print'istnieje'    
-            END
-            ELSE 
-            BEGIN
-            INSERT INTO Whiskey_price VALUES({int(id)}, {price}, '{data}')
-            END''')
+        try:
+            with conn.cursor() as cursor:
+                cursor.execute(f'''IF EXISTS
+                (
+                SELECT *
+                FROM Whiskey_price
+                WHERE ID = {id} AND Price = {price}) 
+                Begin
+                Print'istnieje'    
+                END
+                ELSE 
+                BEGIN
+                INSERT INTO Whiskey_price VALUES({int(id)}, {price}, '{data}')
+                END''')
+        except:
+            pass
 
     #print(id)
 

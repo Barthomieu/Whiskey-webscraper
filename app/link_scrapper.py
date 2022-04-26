@@ -10,7 +10,8 @@ cursor = conn.cursor()
 for page in range(0,2):
 
     n_pages += 1
-    url = "https://www.whiskybase.com/market/browse?take=100&search=&price%5B%5D=-1&fillinglevel_id%5B%5D=&sort=added&direction=desc&page="+str(n_pages)
+
+    url = "https://www.whiskybase.com/market/browse?take=500&search=&price%5B%5D=-1&fillinglevel_id%5B%5D=&sort=added&direction=desc&page="+str(n_pages)
     r = get(url, headers=headers).text
     page_html = BeautifulSoup(r, "html.parser")
 
@@ -19,11 +20,6 @@ for page in range(0,2):
 
     if firstrow_containers  != []:
 
-        namelist = list()
-        pricelist = list()
-        ratinglist = list()
-        linkslist = list()
-        countrylist = list()
         # getting data from table first row
         for container in firstrow_containers:
             #Names
@@ -31,7 +27,7 @@ for page in range(0,2):
                 name = container.find("a", {"class": "mp-whisky-item-name"}).text.replace('\t', "").replace('\n', "").replace("'", "")
             except:
                 name = None
-            namelist.append(name)
+
             #Links
             try:
                 link = container.find("a").get('href')
@@ -39,7 +35,6 @@ for page in range(0,2):
             except:
                 link = None
 
-            linkslist.append(link)
             if link != None:
                 print(f"dodaje do bazy:  {int(id)}, '{name}', '{link}')")
                 with conn.cursor() as cursor:

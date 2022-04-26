@@ -21,13 +21,14 @@ for bottle_id in update_list:
     r = get(base_url + str(bottle_id), headers=headers).text
     page_html = BeautifulSoup(r, "html.parser")
 
+
     #rating
     try:
         rating_all = page_html.find("dl", {"class": "dl-horizontal"}).text.replace('\t', "").replace('\n', "")
-        rating = rating_all[7:13]
+        rating = rating_all[7:13].replace('\'', "").replace('\"', "")
     except:
         rating = None
-    print(rating)
+
 
     table = page_html.find("table", attrs={"class":"datalist mp-whisky"})
     if table != None:
@@ -38,28 +39,28 @@ for bottle_id in update_list:
         except:
             category = None
 
-        print(category)
+
         # butelkowane
         try:
-            bottled = df[df[0] == "Bottled"][1].values[0]
+            bottled = df[df[0] == "Bottled"][1].values[0].replace('\'', "").replace('\"', "")
         except:
             bottled = None
             # kraj dostawy
-        print(bottled)
+
         try:
             ships_from = df[df[0] == "Ships from"][1].values[0]
         except:
             ships_from = None
-        print(ships_from)
+
 
         with conn.cursor() as cursor:
-            cursor.execute(f'''UPDATE  Whiskey_data 
-                            SET category = '{category}',
+            cursor.execute(f""" UPDATE  Whiskey_data 
+                                SET category = '{category}',
                                 bottled = '{bottled}',
                                 rating = '{rating}',
                                 ships_from = '{ships_from}',
                                 update_data = 1                        
-                            WHERE product_id = {bottle_id}''')
+                                WHERE product_id = {bottle_id} """)
 
     else:
         print("brak danych")
