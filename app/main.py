@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, request,render_template
 
-from scrappers.db_connection import conn
+from app.db_manager.db_connection import conn
 from flask_assets import Environment, Bundle
 
 
