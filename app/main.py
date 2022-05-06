@@ -45,6 +45,9 @@ def index():
 @app.route('/mainpage')
 def mainpage():
     return render_template('mainpage.html')
+@app.route('/gallery')
+def gallery():
+    return render_template('gallery.html')
 
 if __name__ ==  '__main__':
     app.run()
