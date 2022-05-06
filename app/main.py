@@ -48,6 +48,9 @@ def mainpage():
 @app.route('/gallery')
 def gallery():
     return render_template('gallery.html')
+@app.route('/home')
+def home():
+    return render_template('home.html')
 
 if __name__ ==  '__main__':
     app.run()
