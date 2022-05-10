@@ -2,8 +2,13 @@ import os
 
 from flask import Flask, request,render_template
 
+from app.scrappers.link_scrapper import link_scraper
+from app.scrappers.price_tracker import price_tracker
 from app.db_manager.db_connection import conn
 from flask_assets import Environment, Bundle
+import time
+import atexit
+from apscheduler.schedulers.background import BackgroundScheduler
 
 
 cursor =conn.cursor()
@@ -24,7 +29,17 @@ css = Bundle(
   ),
   output = 'dist/app.css'
 )
+def print_date_time():
+    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
+
+scheduler = BackgroundScheduler()
+scheduler.add_job(func=price_tracker, trigger="interval", hours=1)
+scheduler.add_job(func=link_scraper, trigger="interval", days=1)
+scheduler.start()
+
+# Shut down the scheduler when exiting the app
+atexit.register(lambda: scheduler.shutdown())
 assets.register('app-css', css)
 
 @app.route('/')
@@ -53,4 +68,4 @@ def home():
     return render_template('home.html')
 
 if __name__ ==  '__main__':
-    app.run()
+    app.run(debug=True)
