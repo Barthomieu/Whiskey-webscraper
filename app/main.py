@@ -6,7 +6,6 @@ from app.scrappers.link_scrapper import link_scraper
 from app.scrappers.price_tracker import price_tracker
 from app.db_manager.db_connection import conn
 from flask_assets import Environment, Bundle
-import time
 import atexit
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -29,8 +28,6 @@ css = Bundle(
   ),
   output = 'dist/app.css'
 )
-def print_date_time():
-    print(time.strftime("%A, %d. %B %Y %I:%M:%S %p"))
 
 
 scheduler = BackgroundScheduler()
