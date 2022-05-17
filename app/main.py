@@ -49,20 +49,37 @@ def index():
 		,bottled 
 		,rating
 		,ships_from
+		,product_id
 
 	FROM Whiskey_data D
-	JOIN Whiskey_price P on D.product_id=P.ID""")
+	LEFT JOIN Whiskey_price P on D.product_id=P.ID""")
     data = cursor.fetchall()
     return render_template('index.html', data=data)
 @app.route('/mainpage')
 def mainpage():
     return render_template('mainpage.html')
+
 @app.route('/gallery')
 def gallery():
     return render_template('gallery.html')
+
 @app.route('/home')
 def home():
     return render_template('home.html')
+
+@app.route('/<whiskey_id>')
+def view_price_chart(whiskey_id):
+    cursor.execute(f"""SELECT	convert(VARCHAR(10),Data,103), Price FROM Whiskey_price WHERE ID = {int(whiskey_id)}""")
+    print(whiskey_id)
+    data = cursor.fetchall()
+
+
+    labels = [row[0] for row in data]
+    values = [row[1] for row in data]
+
+    return render_template('price_chart.html', labels = labels, values = values)
+
+
 
 if __name__ ==  '__main__':
     app.run(debug=True)

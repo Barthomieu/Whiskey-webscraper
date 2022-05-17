@@ -10,7 +10,7 @@ def link_scraper():
     n_pages = 0
     cursor = conn.cursor()
 
-    for page in range(0,2):
+    for page in range(0,15):
 
         n_pages += 1
 
