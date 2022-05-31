@@ -6,24 +6,27 @@
     {% assets 'app-css' %}
       <link rel="stylesheet" type="text/css" href="{{ ASSET_URL }}"></script>
     {% endassets %}
-<style>
+
+    <style>
     body {
   background-image: url("../static/Pan_Wiesio_piwko.jpg");
   background-color: #cccccc;
 }
 </style>
+
 </head>
 <body>
- <p style="background-image: url('../static/Pan_Wiesio_piwko.jpg');">
-<ul>
-	<li><a href=home>Home</a></li>
-	<li>About</li>
-	<li><a href=gallery>Gallery</a></li>
-	<li> <a href=mainpage>About us</a></li>
-</ul>
+<div class="topnav">
+  <a class="active" href="#home"><img src="../static/img/logo.png" alt="Logo"></a>
+  <a href="home"> Ulubione </a>
+  <a href="gallery"> Powiadomienia </a>
+  <a href="mainpage">O nas</a>
+</div>
 
 
-<h2>WhiskeyPriceTracker</h2>
+
+<h1>  </h1>
+
 
 
 
@@ -59,6 +62,6 @@
    </table>
 
 </div>
-</p>
+
 </body>
 </html>

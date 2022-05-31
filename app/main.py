@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, request,render_template
+from flask import Flask, request,render_template, redirect, url_for
 
 from app.scrappers.link_scrapper import link_scraper
 from app.scrappers.price_tracker import price_tracker
@@ -41,6 +41,7 @@ assets.register('app-css', css)
 
 @app.route('/')
 def index():
+
     cursor.execute(f"""SELECT	product_name
 		,(select top 1 Price where Id = product_id order by Data desc)
 		-- TODO dodać obliczanie zmienności ceny
@@ -50,7 +51,6 @@ def index():
 		,rating
 		,ships_from
 		,product_id
-
 	FROM Whiskey_data D
 	LEFT JOIN Whiskey_price P on D.product_id=P.ID""")
     data = cursor.fetchall()
@@ -69,7 +69,7 @@ def home():
 
 @app.route('/<whiskey_id>')
 def view_price_chart(whiskey_id):
-    cursor.execute(f"""SELECT	convert(VARCHAR(10),Data,103), Price FROM Whiskey_price WHERE ID = {int(whiskey_id)}""")
+    cursor.execute(f"""SELECT	convert(VARCHAR(10),Data,103), Price FROM Whiskey_price WHERE ID = {int(whiskey_id)} Order by 1""")
     print(whiskey_id)
     data = cursor.fetchall()
 
@@ -82,4 +82,4 @@ def view_price_chart(whiskey_id):
 
 
 if __name__ ==  '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_reloader=False)
