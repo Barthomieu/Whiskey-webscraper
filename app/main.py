@@ -42,7 +42,7 @@ assets.register('app-css', css)
 @app.route('/')
 def index():
 
-    cursor.execute(f"""SELECT	product_name
+    cursor.execute(f"""SELECT distinct 	product_name
 		,(select top 1 Price where Id = product_id order by Data desc)
 		-- TODO dodać obliczanie zmienności ceny
 		,store_link
@@ -69,8 +69,9 @@ def home():
 
 @app.route('/<whiskey_id>')
 def view_price_chart(whiskey_id):
-    cursor.execute(f"""SELECT	convert(VARCHAR(10),Data,103) as data, Price FROM Whiskey_price WHERE ID like {int(whiskey_id)} Order by 1""")
-    print(whiskey_id)
+    cursor.execute(f"""SELECT distinct	convert(VARCHAR(10),Data,103) as data, Price FROM Whiskey_price WHERE ID like {int(whiskey_id)} Order by 1""")
+
+
     data = cursor.fetchall()
 
 
