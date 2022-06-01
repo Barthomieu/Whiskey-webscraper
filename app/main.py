@@ -69,7 +69,7 @@ def home():
 
 @app.route('/<whiskey_id>')
 def view_price_chart(whiskey_id):
-    cursor.execute(f"""SELECT	convert(VARCHAR(10),Data,103), Price FROM Whiskey_price WHERE ID = {int(whiskey_id)} Order by 1""")
+    cursor.execute(f"""SELECT	convert(VARCHAR(10),Data,103) as data, Price FROM Whiskey_price WHERE ID like {int(whiskey_id)} Order by 1""")
     print(whiskey_id)
     data = cursor.fetchall()
 
@@ -82,4 +82,4 @@ def view_price_chart(whiskey_id):
 
 
 if __name__ ==  '__main__':
-    app.run(debug=True)
+    app.run()
