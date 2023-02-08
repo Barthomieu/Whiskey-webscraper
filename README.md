@@ -12,4 +12,4 @@ The project was deployed on azure using github actions http://azure-whiskey-app.
 ## Bulit with: 
 - [Python](https://python.org/)
 - [Flask](https://flask.palletsprojects.com/en/2.2.x/quickstart/0)
-- [Beautiful soup][https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+- [Beautiful soup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
